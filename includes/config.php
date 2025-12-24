@@ -1,8 +1,8 @@
 <?php
-// Database configuration
+// Database configuration for MAMP
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', 'root');  // MAMP default password is 'root'
 define('DB_NAME', 'dolphin_crm');
 
 // Create database connection
