@@ -341,3 +341,26 @@ main h2 {
     background: #e0e7ff;
     color: #667eea;
 }
+
+/*Filter style*/
+.filters {
+    margin: 20px 0;
+}
+
+.filters-heading {
+    font-weight: 10;
+    margin-right: 10px;
+}
+
+.filters a {
+    margin-right: 10px;
+    font-weight: normal;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #333;
+}
+.filters a.active {
+    background-color: #667eea;
+    color: white;
+}

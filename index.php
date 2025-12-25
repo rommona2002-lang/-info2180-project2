@@ -9,7 +9,34 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_name = $_SESSION['firstname'] . ' ' . $_SESSION['lastname'];
 $user_role = $_SESSION['role'];
+
+$filter = $_GET['filter'] ?? 'all';
+$sql = "SELECT 
+        c.id AS contact_id, 
+        c.title, 
+        c.firstname, 
+        c.lastname, 
+        c.email, 
+        c.company, 
+        c.type
+        FROM Contacts c";
+$params = [];
+
+if($filter === 'sales'){
+    $sql .= " WHERE c.type = 'Sales Lead'";
+}elseif($filter === 'support'){
+    $sql .= " WHERE c.type = 'Support'";
+}elseif($filter === 'assigned'){
+    $sql .= " WHERE c.assigned_to = :user_id";
+    $params['user_id'] = $_SESSION['user_id'];
+}
+
+$sql .= " ORDER BY c.created_at DESC";
+$stmt = $conn->prepare($sql);
+$stmt->execute($params);
+$contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,6 +84,59 @@ $user_role = $_SESSION['role'];
                     </ul>
                 </div>
             </div>
+
+            <!Filter>
+            <div class="filters">
+                <h3>
+                    <span class="filter-heading">Filter By:</span>
+                    <a href="index.php" class="<?= $filter === 'all' ? 'active' : '' ?>">All</a>
+                    <a href="index.php?filter=sales" class="<?= $filter === 'sales' ? 'active' : '' ?>">Sales Lead</a>
+                    <a href="index.php?filter=support" class="<?= $filter === 'support' ? 'active' : '' ?>">Support</a>
+                    <a href="index.php?filter=assigned" class="<?= $filter === 'assigned' ? 'active' : '' ?>">Assigned to me</a>
+                </h3>
+            </div>
+
+            <!Contact Table>
+            <div class="table-section">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Company</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if(empty($contacts)): ?>
+                            <tr>
+                                <td colspan="5">No Contacts Found</td>
+                            </tr>
+                        <?php else:?>
+                            <?php foreach($contacts as $contact): ?> 
+                                <tr>
+                                    <td><?= htmlspecialchars($contact['title']. '. '. $contact['firstname']. ' '. $contact['lastname'])?></td>
+                                    <td><?= htmlspecialchars($contact['email'])?></td>
+                                    <td><?= htmlspecialchars($contact['company'])?></td>
+                                    <td>
+                                        <span class="badge">
+                                            <?= htmlspecialchars($contact['type'])?>
+                                        </span>
+                                    </td>
+                                    <td><a href="view_contact.php?id=<?= $contact['contact_id']?>">View</a></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            
+                        <?php endif; ?>
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
         </main>
     </div>
 </body>
