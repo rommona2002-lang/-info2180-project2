@@ -115,7 +115,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                         <div class="form-group">
                             <label for="title">Title *</label>
                             <select name="title"  id="title" required>
-                                <option value="">Select</option>
                                 <option value="Mr">Mr</option>
                                 <option value="Mrs">Mrs</option>
                                 <option value="Ms">Ms</option>
@@ -128,12 +127,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstname">First Name *</label>
-                            <input type="text" id="firstname" name="firstname" required>
+                            <input type="text" id="firstname" name="firstname" placeholder="Jane" required>
                         </div>
 
                         <div class="form-group">
                             <label for="lastname">Last Name *</label>
-                            <input type="text" id="lastname" name="lastname" required>
+                            <input type="text" id="lastname" name="lastname" placeholder="Doe" required>
                         </div>
                     </div>
                     
@@ -141,7 +140,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email *</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" placeholder="something@example.com" required>
                         </div>
                         
                         <div class="form-group">
@@ -160,7 +159,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                         <div class="form-group">
                             <label for="type"> Type *</label>
                             <select name="type" id="type" required>
-                                <option value="">Select</option>
                                 <option value="Sales Lead">Sales Lead</option>
                                 <option value="Support">Support</option>
                             </select>
@@ -172,7 +170,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                         <div class="form-group">
                             <label for="assigned_to">Assigned To *</label>
                             <select name="assigned_to" id="assigned_to" required>
-                                <option value="">Select</option>
                                 <?php foreach($users as $user): ?>
                                     <option value="<?= $user['id']?>">
                                     <?= htmlspecialchars($user['firstname']. ' '.$user['lastname'])?>
