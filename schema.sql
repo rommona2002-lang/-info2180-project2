@@ -44,4 +44,4 @@ CREATE TABLE Notes (
 -- Insert default admin user
 -- Password: 'password123' (hashed)
 INSERT INTO Users (firstname, lastname, password, email, role) 
-VALUES ('Admin', 'User', '$2y$10$1O.UZXnKlHQZgE3qKvqpYeDxE.5J0F6xX5k3X5N8vJvJ5L3kR0cFK', 'admin@project2.com', 'Admin');
+VALUES ('Admin', 'User', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe.y9rF9VKFpXq1qLXjqRqP3VhPqYqJN2', 'admin@project2.com', 'Admin');
