@@ -344,12 +344,10 @@ main h2 {
 
 /*Filter style*/
 .filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 20px 0;
-}
-
-.filters-heading {
-    font-weight: 10;
-    margin-right: 10px;
 }
 
 .filters a {
