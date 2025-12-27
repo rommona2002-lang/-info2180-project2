@@ -144,3 +144,12 @@ function reloadContactDetails() {
         'view_contact.php?id=' + getContactId() + ' #contactDetails > *'
     );
 }
+
+$(document).on('click', 'a[href^="new_contact.php"]', function (e) {
+            e.preventDefault();
+
+            const url = $(this).attr('href');
+
+            $('#main-content').load(url + ' #main-content > *');
+            history.pushState(null, '', url);
+        });

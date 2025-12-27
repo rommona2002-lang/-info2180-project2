@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once 'includes/config.php';
 
 // Check if user is logged in
@@ -112,7 +111,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         </header>
 
-        <main>
+        <main id="main-content">
             <h2>New Contact</h2>
             <div class="form-section">
                 <?php if ($success): ?>

@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once 'includes/config.php';
 
 // Check if user is logged in
@@ -107,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         </header>
         
-        <main>
+        <main id="main-content">
             <h2><?= htmlspecialchars($contact['title'].' '.$contact['firstname'].' '.$contact['lastname']) ?></h2>
             <div class="contact-header">
                 <div class="contactinfo">

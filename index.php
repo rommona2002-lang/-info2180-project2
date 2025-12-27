@@ -82,7 +82,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
         </header>
 
         <!-- Main Content -->
-        <main>
+        <main id="main-content">
             <h2>Dashboard</h2>
             <p>Welcome to Dolphin CRM, <?php echo htmlspecialchars($_SESSION['firstname']); ?>!</p>
             
