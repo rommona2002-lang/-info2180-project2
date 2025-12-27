@@ -68,6 +68,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
             
             <nav>
                 <a href="index.php" class="active">Home</a>
+                <a href="contacts.php">Contacts</a>
                 <a href="new_contact.php">New Contact</a>
                 <?php if ($user_role === 'Admin'): ?>
                     <a href="users.php">Users</a>
@@ -85,6 +86,19 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
         <main>
             <h2>Dashboard</h2>
             <p>Welcome to Dolphin CRM, <?php echo htmlspecialchars($_SESSION['firstname']); ?>!</p>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="contacts.php">View All Contacts</a></li>
+                        <li><a href="new_contact.php">Add New Contact</a></li>
+                        <?php if ($user_role === 'Admin'): ?>
+                            <li><a href="users.php">Manage Users</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
 
             <!Filter>
             <div class="filters">
@@ -95,8 +109,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
                     <a href="index.php?filter=support" class="<?= $filter === 'support' ? 'active' : '' ?>">Support</a>
                     <a href="index.php?filter=assigned" class="<?= $filter === 'assigned' ? 'active' : '' ?>">Assigned to me</a>
                 </h3>
-
-                <a href="new_contact.php" class="btn-switch">+ Add New Contact</a>
             </div>
 
             <!Contact Table>
