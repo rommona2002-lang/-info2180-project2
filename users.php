@@ -101,7 +101,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <nav>
                 <a href="index.php">Home</a>
-                <a href="contacts.php">Contacts</a>
                 <a href="new_contact.php">New Contact</a>
                 <a href="users.php" class="active">Users</a>
                 <a href="logout.php">Logout</a>
