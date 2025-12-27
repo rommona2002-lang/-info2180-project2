@@ -2,7 +2,13 @@
 require_once 'includes/config.php';
 
 // Check if user is logged in
+$isAjax = isset($_GET['ajax']) && $_GET['ajax'] === '1';
 if (!isset($_SESSION['user_id'])) {
+    if ($isAjax) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Not authenticated']);
+        exit();
+    }
     header('Location: login.php');
     exit();
 }
@@ -35,7 +41,14 @@ $sql .= " ORDER BY c.created_at DESC";
 $stmt = $conn->prepare($sql);
 $stmt->execute($params);
 $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($contacts);
+    exit();
+ }
 ?>
+ 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,6 +65,7 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="logo">
                 <h1>🐬 Dolphin CRM</h1>
             </div>
+            
             <nav>
                 <a href="index.php" class="active">Home</a>
                 <a href="contacts.php">Contacts</a>
@@ -61,6 +75,7 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endif; ?>
                 <a href="logout.php">Logout</a>
             </nav>
+            
             <div class="user-info">
                 <span><?php echo htmlspecialchars($user_name); ?></span>
                 <span class="role">(<?php echo htmlspecialchars($user_role); ?>)</span>
@@ -139,5 +154,8 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         </main>
     </div>
+
+    <script src="http://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/general.js"></script>
 </body>
 </html>
