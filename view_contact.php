@@ -68,14 +68,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute(['type' => $switch_to, 'id' => $contact_id]);
     }
 
-    if (!empty($_POST['note_text'])) {
+    if (!empty($_POST['note-text'])) {
         $stmt = $conn->prepare("
             INSERT INTO Notes (contact_id, comment, created_by, created_at)
             VALUES (:contact_id, :comment, :created_by, NOW())
         ");
         $stmt->execute([
             'contact_id' => $contact_id,
-            'comment' => trim($_POST['note_text']),
+            'comment' => trim($_POST['note-text']),
             'created_by' => $_SESSION['user_id']
         ]);
     }
