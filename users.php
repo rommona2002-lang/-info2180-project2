@@ -1,17 +1,36 @@
 <?php
 require_once 'includes/config.php';
+$isAjax = isset($_GET['ajax']) && $_GET['ajax'] === '1';
+
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
+    if ($isAjax) {
+        http_response_code(401);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Not authenticated'
+        ]);
+        exit();
+    }
     header('Location: login.php');
     exit();
 }
 
 // Check if user is Admin
 if ($_SESSION['role'] !== 'Admin') {
+    if ($isAjax) {
+        http_response_code(403);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Forbidden'
+        ]);
+        exit();
+    }
     header('Location: index.php');
     exit();
 }
+
 
 $error = '';
 $success = '';
@@ -51,11 +70,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
+if ($isAjax && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'success' => empty($error),
+        'error' => $error,
+        'message' => $success
+    ]);
+    exit();
+}
 // Fetch all users
 $stmt = $conn->query("SELECT id, firstname, lastname, email, role, created_at FROM Users ORDER BY created_at DESC");
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+<?php if (!$isAjax): ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,15 +111,16 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <span class="role">(<?php echo htmlspecialchars($_SESSION['role']); ?>)</span>
             </div>
         </header>
+        <main id="main-content">
+        <?php endif; ?>
 
         <!-- Main Content -->
-        <main>
+        <div class="users-content">
             <h2>User Management</h2>
             
             <!-- Add New User Form -->
-            <div class="form-section">
-                <h3>Add New User</h3>
-                
+
+            
                 <?php if ($error): ?>
                     <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
                 <?php endif; ?>
@@ -100,7 +129,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="success-message"><?php echo htmlspecialchars($success); ?></div>
                 <?php endif; ?>
                 
-                <form method="POST" action="users.php" class="user-form">
+                <form id="userForm" method="POST" class="user-form">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstname">First Name *</label>
@@ -137,7 +166,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     
                     <button type="submit" class="btn-primary">Add User</button>
                 </form>
-            </div>
+                </div>
             
             <!-- Users Table -->
             <div class="table-section">
@@ -166,8 +195,11 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            </div>
+                </div>
+            
+<?php if (!$isAjax): ?>
         </main>
     </div>
 </body>
-</html>
+</html>  
+<?php endif; ?>
