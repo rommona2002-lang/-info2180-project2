@@ -7,6 +7,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+$isAjax = isset($_GET['ajax']) && $_GET['ajax'] === '1';
+
 $stmt = $conn->prepare("SELECT id, firstname, lastname From Users");
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -14,14 +16,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $success = '';
 $error = '';
 
-if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode([
-        'success' => $success ?: null,
-        'error' => $error ?: null
-    ]);
-    exit();
-}
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $required = ['title', 'firstname', 'lastname', 'email', 
     'type', 'assigned_to'];
@@ -80,7 +75,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     if ($isAjax) {
-        header('Content=Type: application/json; charset=utf-8');
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['success' => $success, 'error' => $error]);
         exit();
     }
